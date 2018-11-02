@@ -1,0 +1,6 @@
+JUGADOR = "@"
+CAJA = "$"
+META = "M"
+CAJAM = "*"
+MURO = "X"
+LIBRE = "_"
