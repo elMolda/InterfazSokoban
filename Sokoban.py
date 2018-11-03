@@ -9,7 +9,7 @@ class Board:
     cajas = 0
 
     ## ---------------------------------------------------------------------
-
+    #Funcion inicial que lee el archivo
     def __init__( self, arch ):
          print(const.CAJA)
          with open('Niveles/nivel3.txt') as f:
@@ -24,9 +24,9 @@ class Board:
          #print("tabla")
          #print(self.Data)
 
+    #Funcion que llena la matriz con el flujo que le llega del archivo
     def llenarMatriz(self,lines):
         print("W: ",self.Width, "H: ",self.Height)
-
         self.Data = [ [ (0) for j in range(self.Height)] for i in range(self.Width) ]
         for i in range (2,self.Height+2):
             for j in range (0,self.Width):
@@ -35,7 +35,9 @@ class Board:
                     self.playerpos = [i-2,j]
                 if (self.Data[i-2][j] == const.CAJA or self.Data[i-2][j] == const.CAJAM):
                     self.cajas = self.cajas + 1
-
+    #Funcion de movimiento individual. 
+    #Entradas: Comando {W,A,S,D}
+    #Salidas: El tablero de juego
     def mover (self,direccion):
         if (direccion=='A'):
             #W
@@ -512,7 +514,9 @@ class Board:
                                                     else:
                                                         #No se puede mover
                                                         return self.Data
-
+    #Funcion de movimientos
+    #Entrada: Cadena de caracteres con los movimientos seleccionados
+    #Salida: Tablero de juego
     def movimientos (self,cadena):
         if len( cadena ) == 1:
             self.mover(cadena)
@@ -523,6 +527,9 @@ class Board:
                 time.sleep(0.2)
         return self.Data
 
+    #Funcion que examina si alguna caja esta bloqueada
+    #Entradas: Posicion de la caja
+    #Salida: True o Fale
     def cajabloqueada (self,posx,posy):
         conta = 0
         if (self.Data[posx - 1][posy] == const.MURO):
@@ -538,6 +545,9 @@ class Board:
         else:
             return False
 
+    #Funcion que retorna si el jugador gano o perdio
+    #Entradas: Ninguna
+    #Salidas: True o False
     def estadodeljugador(self):
         cont = 0
         for filas in range (0, len(self.Data) - 1):
@@ -551,6 +561,6 @@ class Board:
             return True
         else: 
             return False
-
+    #Funcion que permite imprimir el tablero del jugador
     def Print (self):
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.Data]))
