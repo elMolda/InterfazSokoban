@@ -12,7 +12,7 @@ class Board:
 
     def __init__( self, arch ):
          print(const.CAJA)
-         with open('Niveles/nivel1.txt') as f:
+         with open('Niveles/nivel3.txt') as f:
             lines = f.readlines()
             self.Width = int(lines[0])
             self.Height = int(lines[1])
@@ -523,12 +523,30 @@ class Board:
                 time.sleep(0.2)
         return self.Data
 
+    def cajabloqueada (self,posx,posy):
+        conta = 0
+        if (self.Data[posx - 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx + 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy - 1] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy + 1] == const.MURO):
+            conta = conta + 1
+        if conta >= 2:
+            return True
+        else:
+            return False
+
     def estadodeljugador(self):
         cont = 0
         for filas in range (0, len(self.Data) - 1):
             for columnas in range (0, len(self.Data[0]) - 1 ):
                 if self.Data[filas][columnas] == const.CAJAM:
                     cont = cont + 1
+                if self.Data[filas][columnas] == const.CAJA:
+                    return self.cajabloqueada(filas,columnas)
+                
         if cont == self.cajas:
             return True
         else: 
@@ -536,7 +554,3 @@ class Board:
 
     def Print (self):
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.Data]))
-        #for g in range (0, len(self.Data) - 1 ):
-            #print(self.Data[g])
-
-    
