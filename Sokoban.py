@@ -1,16 +1,18 @@
 import const
+import time
 class Board:
      ## ---------------------------------------------------------------------
     Data = [[]]
     Width = 0
     Height = 0
     playerpos = [0,0]
+    cajas = 0
 
     ## ---------------------------------------------------------------------
 
     def __init__( self, arch ):
          print(const.CAJA)
-         with open('tablero.txt') as f:
+         with open('Niveles/nivel1.txt') as f:
             lines = f.readlines()
             self.Width = int(lines[0])
             self.Height = int(lines[1])
@@ -19,8 +21,8 @@ class Board:
          print("Width: ",self.Width)
          print("Height: ",self.Height)
          print("jugador: ", self.playerpos)
-         print("tabla")
-         print(self.Data)
+         #print("tabla")
+         #print(self.Data)
 
     def llenarMatriz(self,lines):
         print("W: ",self.Width, "H: ",self.Height)
@@ -31,208 +33,510 @@ class Board:
                 self.Data[i-2][j] = lines[i][j]
                 if(self.Data[i-2][j] == const.JUGADOR or self.Data[i-2][j] == const.JUGADORM):
                     self.playerpos = [i-2,j]
+                if (self.Data[i-2][j] == const.CAJA or self.Data[i-2][j] == const.CAJAM):
+                    self.cajas = self.cajas + 1
 
     def mover (self,direccion):
-        if (direccion=='W'):
+        if (direccion=='A'):
+            #W
 			#Avanzar Arriba
-            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] == const.LIBRE and self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] == const.JUGADOR): # Si la siguiente casilla esta libre
-                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADOR
-                return self.Data
-            else:
-                if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] == const.CAJA and self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] == const.JUGADOR): # Si en la siguiente casilla hay una caja
-                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] == const.LIBRE): # Si depues de la caja hay vacio
-                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADOR
-                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJA
-                        return self.Data
-                    else:
-                        if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] == const.META): # Si despues de la caja hay una meta
-                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADOR
-                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJAM
-                            return self.Data
-                else:
-                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] == const.CAJAM): #Recordar Jugador sobre meta
-                        if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] == const.LIBRE): #META CAJA LIBRE
-                            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-								#JUGADOR MET
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADORM
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJA
-                                return self.Data
-                            else: #LIBRE ACT
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADORM
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJA
-                                return self.Data
-                        else:
-                            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] == const.META ):
-                                if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-									#JUGADOR MET
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADORM
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJAM
-                                    return self.Data
-                                else: #LIBRE ACT
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 1] = const.JUGADORM
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] + 2] = const.CAJAM
-                                    return self.Data
-                            else:
-                                return False
-        else:
-            if (direccion=='A'):
-                #Avanzar Izquierda
-                if ( self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ]] == const.LIBRE): # Si la siguiente casilla esta libre
-                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                    self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ]] = const.JUGADOR
+            if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADOR):
+                #Si la casilla actual es un jugador
+                if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.LIBRE):
+                    # Y la siguiente casilla es libre
+                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                    self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                    self.playerpos[1] = self.playerpos[1] - 1
                     return self.Data
-                else:
-                    if ( self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ] ] == const.CAJA): # Si en la siguiente casilla hay una caja
-                        if ( self.Data[ self.playerpos[ 0 ] - 2 ][ self.playerpos[ 1 ]] == const.LIBRE): # Si depues de la caja hay vacio
-                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                            self.Data[ self.playerpos[ 0 ] - 1][ self.playerpos[ 1 ] ] = const.JUGADOR
-                            self.Data[ self.playerpos[ 0 ] - 2][ self.playerpos[ 1 ] ] = const.CAJA
-                            return self.Data
-                        else:
-                            if ( self.Data[ self.playerpos[ 0 ] - 2][ self.playerpos[ 1 ] ] == const.META): # Si despues de la caja hay una meta
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                self.Data[ self.playerpos[ 0 ] - 1][ self.playerpos[ 1 ] ] = const.JUGADOR
-                                self.Data[ self.playerpos[ 0 ] - 2][ self.playerpos[ 1 ] ] = const.CAJAM
-                                return self.Data
-                    else:
-                        if ( self.Data[ self.playerpos[ 0 ] - 1][ self.playerpos[ 1 ] ] == const.CAJAM): #Recordar Jugador sobre meta
-                            if ( self.Data[ self.playerpos[ 0 ] - 2 ][ self.playerpos[ 1 ] ] == const.LIBRE): #META CAJA LIBRE
-                                if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-									#JUGADOR MET
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                    self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                    self.Data[ self.playerpos[ 0 ] - 2 ][ self.playerpos[ 1 ] ] = const.CAJA
-                                    return self.Data
-                                else: #LIBRE ACT
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                    self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                    self.Data[ self.playerpos[ 0 ] - 2 ][ self.playerpos[ 1 ] ] = const.CAJA
-                                    return self.Data
-                            else:
-                                if ( self.Data[ self.playerpos[ 0 ] - 2][ self.playerpos[ 1 ] ] == const.META ):
-                                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-                                        #JUGADOR MET
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                        self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                        self.Data[ self.playerpos[ 0 ] - 2 ][ self.playerpos[ 1 ] ] = const.CAJAM
-                                        return self.Data
-                                    else: #LIBRE ACT
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                        self.Data[ self.playerpos[ 0 ] - 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                        self.Data[ self.playerpos[ 0 ] - 2][ self.playerpos[ 1 ] ] = const.CAJAM
-                                        return self.Data
-                                else:
-                                    return False
-            else:
-                if (direccion=='S'):
-					#Avanzar Abajo
-                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] == const.LIBRE): # Si la siguiente casilla esta libre
-                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADOR
+                else: 
+                    if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.META):
+                        # Y la siguiente casilla es meta
+                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                        self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                        self.playerpos[1] = self.playerpos[1] - 1
                         return self.Data
                     else:
-                        if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] == const.CAJA): # Si en la siguiente casilla hay una caja
-                            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] == const.LIBRE): # Si depues de la caja hay vacio
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADOR
-                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJA
+                        if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJA):
+                            #Y la siguiente es una caja
+                            if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.LIBRE):
+                                #Y la siguiente es un espacio libre
+                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                                self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
+                                self.playerpos[1] = self.playerpos[1] - 1
                                 return self.Data
                             else:
-                                if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] == const.META): # Si despues de la caja hay una meta
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADOR
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJAM
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
+                                    #Y la siguiente es una meta
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
+                                    self.playerpos[1] = self.playerpos[1] - 1
+                                    return self.Data
+                                else:
+                                    #No se puede mover
                                     return self.Data
                         else:
-                            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] == const.CAJAM): #Recordar Jugador sobre meta
-                                if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] == const.LIBRE): #META CAJA LIBRE
-                                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-										#JUGADOR MET
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADORM
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJA
-                                        return self.Data
-										
-                                    else: #LIBRE ACT
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADORM
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJA
-                                        return self.Data
+                            if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJAM):
+                                # Y la siguiente es una caja sobre meta
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.LIBRE):
+                                    #Y la siguiente es un espacio libre
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
+                                    self.playerpos[1] = self.playerpos[1] - 1
+                                    return self.Data
                                 else:
-                                    if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] == const.META ):
-                                        if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-											#JUGADOR MET
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADORM
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJAM
-                                            return self.Data
-                                        else: #LIBRE ACT
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 1] = const.JUGADORM
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] - 2] = const.CAJAM
-                                            return self.Data
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
+                                        #Y la siguiente es una meta
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
+                                        self.playerpos[1] = self.playerpos[1] - 1
+                                        return self.Data
                                     else:
-                                        return False
-                else:
-                    if (direccion=='D'):
-						#Avanzar Derecha
-                        if ( self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ]] == const.LIBRE): # Si la siguiente casilla esta libre
-                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                            self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ]] = const.JUGADOR
+                                        #No se puede mover
+                                        return self.Data
+            else:###############################
+                if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
+                    #Si la casilla acutal es un jugador sobre la meta
+                    if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.LIBRE):
+                        # Y la siguiente casilla es libre
+                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                        self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                        self.playerpos[1] = self.playerpos[1] - 1
+                        return self.Data
+                    else:
+                        if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.META):
+                            # Y la siguiente casilla es meta
+                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                            self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                            self.playerpos[1] = self.playerpos[1] - 1
                             return self.Data
                         else:
-                            if ( self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ] ] == const.CAJA): # Si en la siguiente casilla hay una caja
-                                if ( self.Data[ self.playerpos[ 0 ] + 2 ][ self.playerpos[ 1 ]] == const.LIBRE): # Si depues de la caja hay vacio
-                                    self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                    self.Data[ self.playerpos[ 0 ] + 1][ self.playerpos[ 1 ] ] = const.JUGADOR
-                                    self.Data[ self.playerpos[ 0 ] + 2][ self.playerpos[ 1 ] ] = const.CAJA
+                            if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJA):
+                                #Y la siguiente es una caja
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.LIBRE):
+                                    #Y la siguiente es un espacio libre
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                                    self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
+                                    self.playerpos[1] = self.playerpos[1] - 1
                                     return self.Data
                                 else:
-                                    if ( self.Data[ self.playerpos[ 0 ] + 2][ self.playerpos[ 1 ] ] == const.META): # Si despues de la caja hay una meta
-                                        self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                        self.Data[ self.playerpos[ 0 ] + 1][ self.playerpos[ 1 ] ] = const.JUGADOR
-                                        self.Data[ self.playerpos[ 0 ] + 2][ self.playerpos[ 1 ] ] = const.CAJAM
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
+                                        #Y la siguiente es una meta
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
+                                        self.playerpos[1] = self.playerpos[1] - 1
+                                        return self.Data
+                                    else:
+                                        #No se puede mover
                                         return self.Data
                             else:
-                                if ( self.Data[ self.playerpos[ 0 ] + 1][ self.playerpos[ 1 ] ] == const.CAJAM): #Recordar Jugador sobre meta
-                                    if ( self.Data[ self.playerpos[ 0 ] + 2 ][ self.playerpos[ 1 ] ] == const.LIBRE): #META CAJA LIBRE
-                                        if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-											#JUGADOR MET
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                            self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                            self.Data[ self.playerpos[ 0 ] + 2 ][ self.playerpos[ 1 ] ] = const.CAJA
-                                            return self.Data
-                                        else: #LIBRE ACT
-                                            self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                            self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                            self.Data[ self.playerpos[ 0 ] + 2 ][ self.playerpos[ 1 ] ] = const.CAJA
-                                            return self.Data
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJAM):
+                                    # Y la siguiente es una caja sobre meta
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.LIBRE):
+                                        #Y la siguiente es un espacio libre
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                                        self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
+                                        self.playerpos[1] = self.playerpos[1] - 1
+                                        return self.Data
                                     else:
-                                        if ( self.Data[ self.playerpos[ 0 ] + 2][ self.playerpos[ 1 ] ] == const.META ):
-                                            if ( self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ]] == const.JUGADORM): #ACT META CAJA
-												#JUGADOR MET
-                                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.META
-                                                self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                                self.Data[ self.playerpos[ 0 ] + 2 ][ self.playerpos[ 1 ] ] = const.CAJAM
-                                                return self.Data
-                                            else: #LIBRE ACT
-                                                self.Data[ self.playerpos[ 0 ] ][ self.playerpos[ 1 ] ] = const.LIBRE
-                                                self.Data[ self.playerpos[ 0 ] + 1 ][ self.playerpos[ 1 ] ] = const.JUGADORM
-                                                self.Data[ self.playerpos[ 0 ] + 2][ self.playerpos[ 1 ] ] = const.CAJAM
-                                                return self.Data
+                                        if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
+                                            #Y la siguiente es una meta
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                            self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
+                                            self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
+                                            self.playerpos[1] = self.playerpos[1] - 1
+                                            return self.Data
                                         else:
-                                            return False
+                                            #No se puede mover
+                                            return self.Data
+        else:
+            if (direccion=='W'):
+                #A
+                #Avanzar Izquierda
+                if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADOR):
+                    #Si la casilla actual es un jugador
+                    if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.LIBRE):
+                        # Y la siguiente casilla es libre
+                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                        self.Data[self.playerpos[0]- 1 ][self.playerpos[1]] = const.JUGADOR
+                        self.playerpos[0] = self.playerpos[0] - 1
+                        return self.Data
                     else:
-                        return self.playerpos
-    
+                        if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.META):
+                            # Y la siguiente casilla es meta
+                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                            self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                            self.playerpos[0] = self.playerpos[0] - 1
+                            return self.Data
+                        else:
+                            if (self.Data[self.playerpos[0]- 1][self.playerpos[1]] == const.CAJA):
+                                #Y la siguiente es una caja
+                                if (self.Data[self.playerpos[0]- 2][self.playerpos[1]] == const.LIBRE):
+                                    #Y la siguiente es un espacio libre
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                    self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
+                                    self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
+                                    self.playerpos[0] = self.playerpos[0] - 1
+                                    return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
+                                        #Y la siguiente es una meta
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                        self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
+                                        self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
+                                        self.playerpos[0] = self.playerpos[0] - 1
+                                        return self.Data
+                                    else:
+                                        #No se puede mover
+                                        return self.Data
+                            else:
+                                if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJAM):
+                                    # Y la siguiente es una caja sobre meta
+                                    if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.LIBRE):
+                                        #Y la siguiente es un espacio libre
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                        self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                                        self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
+                                        self.playerpos[0] = self.playerpos[0] - 1
+                                        return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
+                                            #Y la siguiente es una meta
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                            self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                                            self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
+                                            self.playerpos[0] = self.playerpos[0] - 1
+                                            return self.Data
+                                        else:
+                                            #No se puede mover
+                                            return self.Data
+                else:###############################
+                    if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
+                        #Si la casilla acutal es un jugador sobre la meta
+                        if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.LIBRE):
+                            # Y la siguiente casilla es libre
+                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                            self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
+                            self.playerpos[0] = self.playerpos[0] - 1
+                            return self.Data
+                        else:
+                            if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.META):
+                                # Y la siguiente casilla es meta
+                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                                self.playerpos[0] = self.playerpos[0] - 1
+                                return self.Data
+                            else:
+                                if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJA):
+                                    #Y la siguiente es una caja
+                                    if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.LIBRE):
+                                        #Y la siguiente es un espacio libre
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                        self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
+                                        self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
+                                        self.playerpos[0] = self.playerpos[0] - 1
+                                        return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
+                                            #Y la siguiente es una meta
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                            self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
+                                            self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
+                                            self.playerpos[0] = self.playerpos[0] - 1
+                                            return self.Data
+                                        else:
+                                            #No se puede mover
+                                            return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJAM):
+                                        # Y la siguiente es una caja sobre meta
+                                        if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.LIBRE):
+                                            #Y la siguiente es un espacio libre
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                            self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                                            self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
+                                            self.playerpos[0] = self.playerpos[0] - 1
+                                            return self.Data
+                                        else:
+                                            if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
+                                                #Y la siguiente es una meta
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
+                                                self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
+                                                self.playerpos[0] = self.playerpos[0] - 1
+                                                return self.Data
+                                            else:
+                                                #No se puede mover
+                                                return self.Data
+            else:
+                if (direccion=='D'):
+                    #S
+					#Avanzar Abajo
+                    if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADOR):
+                        #Si la casilla actual es un jugador
+                        if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.LIBRE):
+                            # Y la siguiente casilla es libre
+                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                            self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                            self.playerpos[1] = self.playerpos[1] + 1
+                            return self.Data
+                        else:
+                            if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.META):
+                                # Y la siguiente casilla es meta
+                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                self.playerpos[1] = self.playerpos[1] + 1
+                                return self.Data
+                            else:
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJA):
+                                    #Y la siguiente es una caja
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.LIBRE):
+                                        #Y la siguiente es un espacio libre
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                        self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                                        self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
+                                        self.playerpos[1] = self.playerpos[1] + 1
+                                        return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
+                                            #Y la siguiente es una meta
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
+                                            self.playerpos[1] = self.playerpos[1] + 1
+                                            return self.Data
+                                        else:
+                                            #No se puede mover
+                                            return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJAM):
+                                        # Y la siguiente es una caja sobre meta
+                                        if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.LIBRE):
+                                            #Y la siguiente es un espacio libre
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
+                                            self.playerpos[1] = self.playerpos[1] + 1
+                                            return self.Data
+                                        else:
+                                            if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
+                                                #Y la siguiente es una meta
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
+                                                self.playerpos[1] = self.playerpos[1] + 1
+                                                return self.Data
+                                            else:
+                                                #No se puede mover
+                                                return self.Data
+                    else:###############################
+                        if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
+                            #Si la casilla acutal es un jugador sobre la meta
+                            if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.LIBRE):
+                                # Y la siguiente casilla es libre
+                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                                self.playerpos[1] = self.playerpos[1] + 1
+                                return self.Data
+                            else: 
+                                if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.META):
+                                    # Y la siguiente casilla es meta
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                    self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                    self.playerpos[1] = self.playerpos[1] + 1
+                                    return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJA):
+                                        #Y la siguiente es una caja
+                                        if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.LIBRE):
+                                            #Y la siguiente es un espacio libre
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                                            self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
+                                            self.playerpos[1] = self.playerpos[1] + 1
+                                            return self.Data
+                                        else:
+                                            if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
+                                                #Y la siguiente es una meta
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
+                                                self.playerpos[1] = self.playerpos[1] + 1
+                                                return self.Data
+                                            else:
+                                                #No se puede mover
+                                                return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJAM):
+                                            # Y la siguiente es una caja sobre meta
+                                            if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.LIBRE):
+                                                #Y la siguiente es un espacio libre
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                                self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
+                                                self.playerpos[1] = self.playerpos[1] + 1
+                                                return self.Data
+                                            else:
+                                                if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
+                                                    #Y la siguiente es una meta
+                                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                    self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
+                                                    self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
+                                                    self.playerpos[1] = self.playerpos[1] + 1
+                                                    return self.Data
+                                                else:
+                                                    #No se puede mover
+                                                    return self.Data
+                else:
+                    if (direccion=='S'):
+                        #D
+						#Avanzar Derecha
+                        if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADOR):
+                            #Si la casilla actual es un jugador
+                            if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.LIBRE):
+                                # Y la siguiente casilla es libre
+                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                self.Data[self.playerpos[0]+ 1 ][self.playerpos[1]] = const.JUGADOR
+                                self.playerpos[0] = self.playerpos[0] + 1
+                                return self.Data
+                            else:
+                                if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.META):
+                                    # Y la siguiente casilla es meta
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                    self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                    self.playerpos[0] = self.playerpos[0] + 1
+                                    return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0]+ 1][self.playerpos[1]] == const.CAJA):
+                                        #Y la siguiente es una caja
+                                        if (self.Data[self.playerpos[0]+ 2][self.playerpos[1]] == const.LIBRE):
+                                            #Y la siguiente es un espacio libre
+                                            self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                            self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
+                                            self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
+                                            self.playerpos[0] = self.playerpos[0] + 1
+                                            return self.Data
+                                        else:
+                                            if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
+                                                #Y la siguiente es una meta
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                                self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
+                                                self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
+                                                self.playerpos[0] = self.playerpos[0] + 1
+                                                return self.Data
+                                            else:
+                                                #No se puede mover
+                                                return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJAM):
+                                            # Y la siguiente es una caja sobre meta
+                                            if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.LIBRE):
+                                                #Y la siguiente es un espacio libre
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                                self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                                self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
+                                                self.playerpos[0] = self.playerpos[0] + 1
+                                                return self.Data
+                                            else:
+                                                if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
+                                                    #Y la siguiente es una meta
+                                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
+                                                    self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                                    self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
+                                                    self.playerpos[0] = self.playerpos[0] + 1
+                                                    return self.Data
+                                                else:
+                                                    #No se puede mover
+                                                    return self.Data
+                        else:###############################
+                            if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
+                                #Si la casilla acutal es un jugador sobre la meta
+                                if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.LIBRE):
+                                    # Y la siguiente casilla es libre
+                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                    self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
+                                    self.playerpos[0] = self.playerpos[0] + 1
+                                    return self.Data
+                                else:
+                                    if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.META):
+                                        # Y la siguiente casilla es meta
+                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                        self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                        self.playerpos[0] = self.playerpos[0] + 1
+                                        return self.Data
+                                    else:
+                                        if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJA):
+                                            #Y la siguiente es una caja
+                                            if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.LIBRE):
+                                                #Y la siguiente es un espacio libre
+                                                self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
+                                                self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
+                                                self.playerpos[0] = self.playerpos[0] + 1
+                                                return self.Data
+                                            else:
+                                                if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
+                                                    #Y la siguiente es una meta
+                                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                    self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
+                                                    self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
+                                                    self.playerpos[0] = self.playerpos[0] + 1
+                                                    return self.Data
+                                                else:
+                                                    #No se puede mover
+                                                    return self.Data
+                                        else:
+                                            if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJAM):
+                                                # Y la siguiente es una caja sobre meta
+                                                if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.LIBRE):
+                                                    #Y la siguiente es un espacio libre
+                                                    self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                    self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                                    self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
+                                                    self.playerpos[0] = self.playerpos[0] + 1
+                                                    return self.Data
+                                                else:
+                                                    if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
+                                                        #Y la siguiente es una meta
+                                                        self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
+                                                        self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
+                                                        self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
+                                                        self.playerpos[0] = self.playerpos[0] + 1
+                                                        return self.Data
+                                                    else:
+                                                        #No se puede mover
+                                                        return self.Data
+
+    def movimientos (self,cadena):
+        if len( cadena ) == 1:
+            self.mover(cadena)
+        else:
+            for c in range (0, len( cadena ) ):
+                self.mover(cadena[c])
+                self.Print()
+                time.sleep(0.2)
+        return self.Data
+
+    def estadodeljugador(self):
+        cont = 0
+        for filas in range (0, len(self.Data) - 1):
+            for columnas in range (0, len(self.Data[0]) - 1 ):
+                if self.Data[filas][columnas] == const.CAJAM:
+                    cont = cont + 1
+        if cont == self.cajas:
+            return True
+        else: 
+            return False
+
     def Print (self):
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.Data]))
+        #for g in range (0, len(self.Data) - 1 ):
+            #print(self.Data[g])
 
     
