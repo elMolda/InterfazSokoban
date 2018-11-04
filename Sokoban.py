@@ -1,18 +1,20 @@
 import const
 import time
 class Board:
-     ## ---------------------------------------------------------------------
+    
+     ## Atributos  =========================================================
     Data = [[]]
     Width = 0
     Height = 0
     playerpos = [0,0]
     cajas = 0
 
-    ## ---------------------------------------------------------------------
+    ## Fin atributos ====================================================================
 
+    ## Inicio Contructor ===============================================================
     def __init__( self, arch ):
          print(const.CAJA)
-         with open('Niveles/nivel3.txt') as f:
+         with open(arch) as f:
             lines = f.readlines()
             self.Width = int(lines[0])
             self.Height = int(lines[1])
@@ -23,7 +25,10 @@ class Board:
          print("jugador: ", self.playerpos)
          #print("tabla")
          #print(self.Data)
+    ## FIN Contructor ==================================================================
 
+
+    ## Inicio llenarMatriz ==============================================================
     def llenarMatriz(self,lines):
         print("W: ",self.Width, "H: ",self.Height)
 
@@ -35,7 +40,76 @@ class Board:
                     self.playerpos = [i-2,j]
                 if (self.Data[i-2][j] == const.CAJA or self.Data[i-2][j] == const.CAJAM):
                     self.cajas = self.cajas + 1
+    ## Fin llenarMatriz ===============================================================
 
+    ## Inicio movimientos ==============================================================
+    def movimientos (self,cadena):
+        if len( cadena ) == 1:
+            self.mover(cadena)
+        else:
+            for c in range (0, len( cadena ) ):
+                self.mover(cadena[c])
+                self.Print()
+                time.sleep(0.2)
+        return self.Data
+    ## Fin movimientos =================================================================
+
+    ## Inicio cajaBloqueda ===========================================================
+    def cajaBloqueada (self,posx,posy):
+        conta = 0
+        if (self.Data[posx - 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx + 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy - 1] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy + 1] == const.MURO):
+            conta = conta + 1
+        if conta >= 2:
+            return True
+        else:
+            return False
+    ## Fin cajaBloqueda ===========================================================
+
+    ## Inicio estadodeljudagor ====================================================
+    def estadoJugador(self):
+        cont = 0
+        for filas in range (0, len(self.Data) - 1):
+            for columnas in range (0, len(self.Data[0]) - 1 ):
+                if self.Data[filas][columnas] == const.CAJAM:
+                    cont = cont + 1
+                if self.Data[filas][columnas] == const.CAJA:
+                    return self.cajaBloqueada(filas,columnas)
+                
+        if cont == self.cajas:
+            return True
+        else: 
+            return False
+    ## Fin estadodeljudagor ====================================================
+
+    ## Inicio print ==================================================================
+    def Print (self):
+        print('\n'.join(['  '.join([str(cell) for cell in row]) for row in self.Data]))
+    ## Fin print =====================================================================
+
+    ## Inicio jugadorAutomatico ======================================================
+    def jugadorAutomatico(self):
+        gano = False
+        while (not gano):
+            mov = "A"
+            ##mov = input()
+            # crear funcion ramndom para obtener una letra entre w,a,s,d
+            # la letra obtenida se pasa a la funcion movimientos.
+            self.movimientos(mov)
+            print("====================================================================================")
+            self.Print()
+            gano = self.estadoJugador()
+        print("GAME OVER")
+
+    ## Fin jugadorAutomatico =========================================================
+
+
+    ## Inicio mover ==================================================================
     def mover (self,direccion):
         if (direccion=='A'):
             #W
@@ -512,45 +586,4 @@ class Board:
                                                     else:
                                                         #No se puede mover
                                                         return self.Data
-
-    def movimientos (self,cadena):
-        if len( cadena ) == 1:
-            self.mover(cadena)
-        else:
-            for c in range (0, len( cadena ) ):
-                self.mover(cadena[c])
-                self.Print()
-                time.sleep(0.2)
-        return self.Data
-
-    def cajabloqueada (self,posx,posy):
-        conta = 0
-        if (self.Data[posx - 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx + 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy - 1] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy + 1] == const.MURO):
-            conta = conta + 1
-        if conta >= 2:
-            return True
-        else:
-            return False
-
-    def estadodeljugador(self):
-        cont = 0
-        for filas in range (0, len(self.Data) - 1):
-            for columnas in range (0, len(self.Data[0]) - 1 ):
-                if self.Data[filas][columnas] == const.CAJAM:
-                    cont = cont + 1
-                if self.Data[filas][columnas] == const.CAJA:
-                    return self.cajabloqueada(filas,columnas)
-                
-        if cont == self.cajas:
-            return True
-        else: 
-            return False
-
-    def Print (self):
-        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.Data]))
+    ## Fin mover ==================================================================
