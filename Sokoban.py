@@ -1,5 +1,6 @@
 import const
 import time
+import random
 class Board:
     
      ## Atributos  =========================================================
@@ -95,10 +96,12 @@ class Board:
     ## Inicio jugadorAutomatico ======================================================
     def jugadorAutomatico(self):
         gano = False
+        movimientos = ["W","A","S","D"]
         while (not gano):
-            mov = "A"
+            mov = movimientos[random.randint(0,3)]
+            #print("Movimiento ",mov)
             ##mov = input()
-            # crear funcion ramndom para obtener una letra entre w,a,s,d
+            # crear funcion random para obtener una letra entre w,a,s,d
             # la letra obtenida se pasa a la funcion movimientos.
             self.movimientos(mov)
             print("====================================================================================")
