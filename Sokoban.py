@@ -107,6 +107,7 @@ class Board:
             print("====================================================================================")
             self.Print()
             gano = self.estadoJugador()
+            time.sleep(0.2)
         print("GAME OVER")
 
     ## Fin jugadorAutomatico =========================================================
