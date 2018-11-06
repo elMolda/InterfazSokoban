@@ -1,7 +1,9 @@
 import const
 import time
+import random
 class Board:
-     ## ---------------------------------------------------------------------
+    
+     ## Atributos  =========================================================
     Data = [[]]
     Width = 0
     Height = 0
@@ -10,9 +12,12 @@ class Board:
 
     ## ---------------------------------------------------------------------
     #Funcion inicial que lee el archivo
+    ## Fin atributos ====================================================================
+
+    ## Inicio Contructor ===============================================================
     def __init__( self, arch ):
          print(const.CAJA)
-         with open('Niveles/nivel3.txt') as f:
+         with open(arch) as f:
             lines = f.readlines()
             self.Width = int(lines[0])
             self.Height = int(lines[1])
@@ -23,8 +28,11 @@ class Board:
          print("jugador: ", self.playerpos)
          #print("tabla")
          #print(self.Data)
+    ## FIN Contructor ==================================================================
 
     #Funcion que llena la matriz con el flujo que le llega del archivo
+
+    ## Inicio llenarMatriz ==============================================================
     def llenarMatriz(self,lines):
         print("W: ",self.Width, "H: ",self.Height)
         self.Data = [ [ (0) for j in range(self.Height)] for i in range(self.Width) ]
@@ -38,6 +46,79 @@ class Board:
     #Funcion de movimiento individual. 
     #Entradas: Comando {W,A,S,D}
     #Salidas: El tablero de juego
+    ## Fin llenarMatriz ===============================================================
+
+    ## Inicio movimientos ==============================================================
+    def movimientos (self,cadena):
+        if len( cadena ) == 1:
+            self.mover(cadena)
+        else:
+            for c in range (0, len( cadena ) ):
+                self.mover(cadena[c])
+                self.Print()
+                time.sleep(0.2)
+        return self.Data
+    ## Fin movimientos =================================================================
+
+    ## Inicio cajaBloqueda ===========================================================
+    def cajaBloqueada (self,posx,posy):
+        conta = 0
+        if (self.Data[posx - 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx + 1][posy] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy - 1] == const.MURO):
+            conta = conta + 1
+        if (self.Data[posx][posy + 1] == const.MURO):
+            conta = conta + 1
+        if conta >= 2:
+            return True
+        else:
+            return False
+    ## Fin cajaBloqueda ===========================================================
+
+    ## Inicio estadodeljudagor ====================================================
+    def estadoJugador(self):
+        cont = 0
+        for filas in range (0, len(self.Data) - 1):
+            for columnas in range (0, len(self.Data[0]) - 1 ):
+                if self.Data[filas][columnas] == const.CAJAM:
+                    cont = cont + 1
+                if self.Data[filas][columnas] == const.CAJA:
+                    return self.cajaBloqueada(filas,columnas)
+                
+        if cont == self.cajas:
+            return True
+        else: 
+            return False
+    ## Fin estadodeljudagor ====================================================
+
+    ## Inicio print ==================================================================
+    def Print (self):
+        print('\n'.join(['  '.join([str(cell) for cell in row]) for row in self.Data]))
+    ## Fin print =====================================================================
+
+    ## Inicio jugadorAutomatico ======================================================
+    def jugadorAutomatico(self):
+        gano = False
+        movimientos = ["W","A","S","D"]
+        while (not gano):
+            mov = movimientos[random.randint(0,3)]
+            #print("Movimiento ",mov)
+            ##mov = input()
+            # crear funcion random para obtener una letra entre w,a,s,d
+            # la letra obtenida se pasa a la funcion movimientos.
+            self.movimientos(mov)
+            print("====================================================================================")
+            self.Print()
+            gano = self.estadoJugador()
+            time.sleep(0.3)
+        print("GAME OVER")
+
+    ## Fin jugadorAutomatico =========================================================
+
+
+    ## Inicio mover ==================================================================
     def mover (self,direccion):
         if (direccion=='A'):
             #W
@@ -514,53 +595,4 @@ class Board:
                                                     else:
                                                         #No se puede mover
                                                         return self.Data
-    #Funcion de movimientos
-    #Entrada: Cadena de caracteres con los movimientos seleccionados
-    #Salida: Tablero de juego
-    def movimientos (self,cadena):
-        if len( cadena ) == 1:
-            self.mover(cadena)
-        else:
-            for c in range (0, len( cadena ) ):
-                self.mover(cadena[c])
-                self.Print()
-                time.sleep(0.2)
-        return self.Data
-
-    #Funcion que examina si alguna caja esta bloqueada
-    #Entradas: Posicion de la caja
-    #Salida: True o Fale
-    def cajabloqueada (self,posx,posy):
-        conta = 0
-        if (self.Data[posx - 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx + 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy - 1] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy + 1] == const.MURO):
-            conta = conta + 1
-        if conta >= 2:
-            return True
-        else:
-            return False
-
-    #Funcion que retorna si el jugador gano o perdio
-    #Entradas: Ninguna
-    #Salidas: True o False
-    def estadodeljugador(self):
-        cont = 0
-        for filas in range (0, len(self.Data) - 1):
-            for columnas in range (0, len(self.Data[0]) - 1 ):
-                if self.Data[filas][columnas] == const.CAJAM:
-                    cont = cont + 1
-                if self.Data[filas][columnas] == const.CAJA:
-                    return self.cajabloqueada(filas,columnas)
-                
-        if cont == self.cajas:
-            return True
-        else: 
-            return False
-    #Funcion que permite imprimir el tablero del jugador
-    def Print (self):
-        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.Data]))
+    ## Fin mover ==================================================================
