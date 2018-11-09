@@ -72,9 +72,9 @@ class Board:
         if (self.Data[posx][posy + 1] == const.MURO):
             conta = conta + 1
         if conta >= 2:
-            return True
+            return 0
         else:
-            return False
+            return 1
     ## Fin cajaBloqueda ===========================================================
 
     ## Inicio estadodeljudagor ====================================================
@@ -88,9 +88,9 @@ class Board:
                     return self.cajaBloqueada(filas,columnas)
                 
         if cont == self.cajas:
-            return True
+            return 2
         else: 
-            return False
+            return 1
     ## Fin estadodeljudagor ====================================================
 
     ## Inicio print ==================================================================
@@ -100,9 +100,9 @@ class Board:
 
     ## Inicio jugadorAutomatico ======================================================
     def jugadorAutomatico(self):
-        gano = False
+        gano = -1
         movimientos = ["W","A","S","D"]
-        while (not gano):
+        while (gano != 0 and gano != 2):
             mov = movimientos[random.randint(0,3)]
             #print("Movimiento ",mov)
             ##mov = input()
@@ -114,6 +114,11 @@ class Board:
             gano = self.estadoJugador()
             time.sleep(0.3)
         print("GAME OVER")
+        if gano == 0:
+            print("YOU LOSE")
+        else:
+            if gano == 2:
+                print("YOU WIN")
 
     ## Fin jugadorAutomatico =========================================================
 

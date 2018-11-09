@@ -6,21 +6,28 @@ import Sokoban
 
 # Fin rutas ===================================
 def jugadorManual():
-    arch = "Niveles/nivel3.txt"
+    arch = "Niveles/nivel1.txt"
     board = Sokoban.Board(arch)
     board.Print()
 
-    gano = False
-    while (not gano):
+    gano = -1
+    while (gano != 0 and gano != 2):
         mov = input()
+        # crear funcion random para obtener una letra entre w,a,s,d
+        # la letra obtenida se pasa a la funcion movimientos.
         board.movimientos(mov)
-        print("============================================================================")
+        print("====================================================================================")
         board.Print()
         gano = board.estadoJugador()
     print("GAME OVER")
+    if gano == 0:
+        print("YOU LOSE")
+    else:
+        if gano == 2:
+            print("YOU WIN")
 
 def jugadorAutomatico():
-    arch = "Niveles/nivel3.txt"
+    arch = "Niveles/nivel1.txt"
     board = Sokoban.Board(arch)
     board.Print()
     board.jugadorAutomatico()
