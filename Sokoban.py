@@ -45,7 +45,7 @@ class Board:
                     self.cajas = self.cajas + 1
     #Funcion de movimiento individual. 
     #Entradas: Comando {W,A,S,D}
-    #Salidas: El tablero de juego
+    #Salidas: La posicion del jugador en el tablero
     ## Fin llenarMatriz ===============================================================
 
     ## Inicio movimientos ==============================================================
