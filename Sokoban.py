@@ -62,20 +62,79 @@ class Board:
 
     ## Inicio cajaBloqueda ===========================================================
     def cajaBloqueada (self,posx,posy):
-        conta = 0
-        if (self.Data[posx - 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx + 1][posy] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy - 1] == const.MURO):
-            conta = conta + 1
-        if (self.Data[posx][posy + 1] == const.MURO):
-            conta = conta + 1
-        if conta >= 2:
+        if(self.bloqueoPared(posx,posy) == 0):
+            print ("bloqueoPared")
             return 0
-        else:
-            return 1
+        if(self.cajasbloq(posx,posy) == 0):
+            print ("CJASBLOQ")
+            return 0
+        if(self.cuatrocajas(posx,posy) == 0):
+            print ("cuatrocajas")
+            return 0
+        return 1
     ## Fin cajaBloqueda ===========================================================
+
+    
+    def bloqueoPared(self,posx,posy):
+        if((self.Data[posx -1][posy] == const.MURO and (
+        self.Data[posx][posy + 1] == const.MURO or
+        self.Data[posx][posy - 1] == const.MURO 
+        )) or
+        (self.Data[posx +1][posy] == const.MURO and (
+        self.Data[posx][posy + 1] == const.MURO or
+        self.Data[posx][posy - 1] == const.MURO))):
+            return 0
+        return 1
+
+    
+
+    ## cajasbloq ====================================================================
+    #revisa si hay dos cajas juntas junto a paredes
+    def cajasbloq(self,posx,posy):
+        if((self.Data[posx][posy +1] == const.CAJA or self.Data[posx][posy +1] == const.CAJAM) and (
+           ( self.Data[posx -1][posy] == const.MURO and
+            self.Data[posx-1][posy +1] == const.MURO )
+            or
+            (self.Data[posx +1][posy] == const.MURO and
+             self.Data[posx +1][ posy+1] == const.MURO ))):
+            print("Entro 22")
+            return 0
+        if((self.Data[posx+1][posy] == const.CAJA or self.Data[posx+1][posy] == const.CAJAM ) and (
+           ( self.Data[posx][posy-1] == const.MURO and
+            self.Data[posx+1][posy -1] == const.MURO )
+            or
+            (self.Data[posx][posy+1] == const.MURO and
+             self.Data[posx +1][ posy+1] == const.MURO ))):
+            print("Entro 111")
+            return 0
+        return 1
+
+    def cajasbloqM(self,posx,posy):
+        if((self.Data[posx][posy +1] == const.CAJA) and (
+           ( self.Data[posx -1][posy] == const.MURO and
+            self.Data[posx-1][posy +1] == const.MURO )
+            or
+            (self.Data[posx +1][posy] == const.MURO and
+             self.Data[posx +1][ posy+1] == const.MURO ))):
+            print("Entro 22")
+            return 0
+        if((self.Data[posx+1][posy] == const.CAJA ) and (
+           ( self.Data[posx][posy-1] == const.MURO and
+            self.Data[posx+1][posy -1] == const.MURO )
+            or
+            (self.Data[posx][posy+1] == const.MURO and
+             self.Data[posx +1][ posy+1] == const.MURO ))):
+            print("Entro 111")
+            return 0
+        return 1
+
+    def cuatrocajas(self,posx,posy):
+        if(self.Data[posx +1][posy] == const.CAJA and
+            self.Data[posx][posy+1] == const.CAJA and
+            self.Data[posx +1][posy +1] == const.CAJA):
+            return 0
+        return 1
+        
 
     ## Inicio estadodeljudagor ====================================================
     def estadoJugador(self):
@@ -84,8 +143,12 @@ class Board:
             for columnas in range (0, len(self.Data[0]) - 1 ):
                 if self.Data[filas][columnas] == const.CAJAM:
                     cont = cont + 1
+                    if(self.cajasbloqM(filas,columnas) == 0):
+                        print ("CJASBLOQ121212")
+                        return 0
                 if self.Data[filas][columnas] == const.CAJA:
-                    return self.cajaBloqueada(filas,columnas)
+                    if (self.cajaBloqueada(filas,columnas) == 0):
+                        return 0
                 
         if cont == self.cajas:
             return 2
