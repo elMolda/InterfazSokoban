@@ -13,8 +13,6 @@ def jugadorManual():
     gano = -1
     while (gano != 0 and gano != 2):
         mov = input()
-        # crear funcion random para obtener una letra entre w,a,s,d
-        # la letra obtenida se pasa a la funcion movimientos.
         board.movimientos(mov)
         print("====================================================================================")
         board.Print()
