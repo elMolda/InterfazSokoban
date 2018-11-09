@@ -57,7 +57,7 @@ class Board:
                 self.mover(cadena[c])
                 self.Print()
                 time.sleep(0.2)
-        return self.Data
+        return self.playerpos
     ## Fin movimientos =================================================================
 
     ## Inicio cajaBloqueda ===========================================================
@@ -135,14 +135,14 @@ class Board:
                     self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                     self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                     self.playerpos[1] = self.playerpos[1] - 1
-                    return self.Data
+                    return self.playerpos
                 else: 
                     if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.META):
                         # Y la siguiente casilla es meta
                         self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                         self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                         self.playerpos[1] = self.playerpos[1] - 1
-                        return self.Data
+                        return self.playerpos
                     else:
                         if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJA):
                             #Y la siguiente es una caja
@@ -152,7 +152,7 @@ class Board:
                                 self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                                 self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
                                 self.playerpos[1] = self.playerpos[1] - 1
-                                return self.Data
+                                return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
                                     #Y la siguiente es una meta
@@ -160,10 +160,10 @@ class Board:
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
                                     self.playerpos[1] = self.playerpos[1] - 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     #No se puede mover
-                                    return self.Data
+                                    return self.playerpos
                         else:
                             if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJAM):
                                 # Y la siguiente es una caja sobre meta
@@ -173,7 +173,7 @@ class Board:
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
                                     self.playerpos[1] = self.playerpos[1] - 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
                                         #Y la siguiente es una meta
@@ -181,10 +181,10 @@ class Board:
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
                                         self.playerpos[1] = self.playerpos[1] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         #No se puede mover
-                                        return self.Data
+                                        return self.playerpos
             else:###############################
                 if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
                     #Si la casilla acutal es un jugador sobre la meta
@@ -193,14 +193,14 @@ class Board:
                         self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                         self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                         self.playerpos[1] = self.playerpos[1] - 1
-                        return self.Data
+                        return self.playerpos
                     else:
                         if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.META):
                             # Y la siguiente casilla es meta
                             self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                             self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                             self.playerpos[1] = self.playerpos[1] - 1
-                            return self.Data
+                            return self.playerpos
                         else:
                             if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJA):
                                 #Y la siguiente es una caja
@@ -210,7 +210,7 @@ class Board:
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                                     self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
                                     self.playerpos[1] = self.playerpos[1] - 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
                                         #Y la siguiente es una meta
@@ -218,10 +218,10 @@ class Board:
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADOR
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
                                         self.playerpos[1] = self.playerpos[1] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         #No se puede mover
-                                        return self.Data
+                                        return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0]][self.playerpos[1] - 1] == const.CAJAM):
                                     # Y la siguiente es una caja sobre meta
@@ -231,7 +231,7 @@ class Board:
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                                         self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJA
                                         self.playerpos[1] = self.playerpos[1] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0]][self.playerpos[1] - 2] == const.META):
                                             #Y la siguiente es una meta
@@ -239,10 +239,10 @@ class Board:
                                             self.Data[self.playerpos[0]][self.playerpos[1] - 1] = const.JUGADORM
                                             self.Data[self.playerpos[0]][self.playerpos[1] - 2] = const.CAJAM
                                             self.playerpos[1] = self.playerpos[1] - 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             #No se puede mover
-                                            return self.Data
+                                            return self.playerpos
         else:
             if (direccion=='W'):
                 #A
@@ -254,14 +254,14 @@ class Board:
                         self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                         self.Data[self.playerpos[0]- 1 ][self.playerpos[1]] = const.JUGADOR
                         self.playerpos[0] = self.playerpos[0] - 1
-                        return self.Data
+                        return self.playerpos
                     else:
                         if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.META):
                             # Y la siguiente casilla es meta
                             self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                             self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                             self.playerpos[0] = self.playerpos[0] - 1
-                            return self.Data
+                            return self.playerpos
                         else:
                             if (self.Data[self.playerpos[0]- 1][self.playerpos[1]] == const.CAJA):
                                 #Y la siguiente es una caja
@@ -271,7 +271,7 @@ class Board:
                                     self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
                                     self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
                                     self.playerpos[0] = self.playerpos[0] - 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
                                         #Y la siguiente es una meta
@@ -279,10 +279,10 @@ class Board:
                                         self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
                                         self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
                                         self.playerpos[0] = self.playerpos[0] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         #No se puede mover
-                                        return self.Data
+                                        return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJAM):
                                     # Y la siguiente es una caja sobre meta
@@ -292,7 +292,7 @@ class Board:
                                         self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                                         self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
                                         self.playerpos[0] = self.playerpos[0] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
                                             #Y la siguiente es una meta
@@ -300,10 +300,10 @@ class Board:
                                             self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                                             self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
                                             self.playerpos[0] = self.playerpos[0] - 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             #No se puede mover
-                                            return self.Data
+                                            return self.playerpos
                 else:###############################
                     if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
                         #Si la casilla acutal es un jugador sobre la meta
@@ -312,14 +312,14 @@ class Board:
                             self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                             self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
                             self.playerpos[0] = self.playerpos[0] - 1
-                            return self.Data
+                            return self.playerpos
                         else:
                             if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.META):
                                 # Y la siguiente casilla es meta
                                 self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                                 self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                                 self.playerpos[0] = self.playerpos[0] - 1
-                                return self.Data
+                                return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJA):
                                     #Y la siguiente es una caja
@@ -329,7 +329,7 @@ class Board:
                                         self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
                                         self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
                                         self.playerpos[0] = self.playerpos[0] - 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
                                             #Y la siguiente es una meta
@@ -337,10 +337,10 @@ class Board:
                                             self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADOR
                                             self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
                                             self.playerpos[0] = self.playerpos[0] - 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             #No se puede mover
-                                            return self.Data
+                                            return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0] - 1][self.playerpos[1]] == const.CAJAM):
                                         # Y la siguiente es una caja sobre meta
@@ -350,7 +350,7 @@ class Board:
                                             self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                                             self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJA
                                             self.playerpos[0] = self.playerpos[0] - 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             if (self.Data[self.playerpos[0] - 2][self.playerpos[1]] == const.META):
                                                 #Y la siguiente es una meta
@@ -358,10 +358,10 @@ class Board:
                                                 self.Data[self.playerpos[0] - 1][self.playerpos[1]] = const.JUGADORM
                                                 self.Data[self.playerpos[0] - 2][self.playerpos[1]] = const.CAJAM
                                                 self.playerpos[0] = self.playerpos[0] - 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 #No se puede mover
-                                                return self.Data
+                                                return self.playerpos
             else:
                 if (direccion=='D'):
                     #S
@@ -373,14 +373,14 @@ class Board:
                             self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                             self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                             self.playerpos[1] = self.playerpos[1] + 1
-                            return self.Data
+                            return self.playerpos
                         else:
                             if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.META):
                                 # Y la siguiente casilla es meta
                                 self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                                 self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                 self.playerpos[1] = self.playerpos[1] + 1
-                                return self.Data
+                                return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJA):
                                     #Y la siguiente es una caja
@@ -390,7 +390,7 @@ class Board:
                                         self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                                         self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
                                         self.playerpos[1] = self.playerpos[1] + 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
                                             #Y la siguiente es una meta
@@ -398,10 +398,10 @@ class Board:
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
                                             self.playerpos[1] = self.playerpos[1] + 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             #No se puede mover
-                                            return self.Data
+                                            return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJAM):
                                         # Y la siguiente es una caja sobre meta
@@ -411,7 +411,7 @@ class Board:
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
                                             self.playerpos[1] = self.playerpos[1] + 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
                                                 #Y la siguiente es una meta
@@ -419,10 +419,10 @@ class Board:
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
                                                 self.playerpos[1] = self.playerpos[1] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 #No se puede mover
-                                                return self.Data
+                                                return self.playerpos
                     else:###############################
                         if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
                             #Si la casilla acutal es un jugador sobre la meta
@@ -431,14 +431,14 @@ class Board:
                                 self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                                 self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                                 self.playerpos[1] = self.playerpos[1] + 1
-                                return self.Data
+                                return self.playerpos
                             else: 
                                 if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.META):
                                     # Y la siguiente casilla es meta
                                     self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                                     self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                     self.playerpos[1] = self.playerpos[1] + 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJA):
                                         #Y la siguiente es una caja
@@ -448,7 +448,7 @@ class Board:
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                                             self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
                                             self.playerpos[1] = self.playerpos[1] + 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
                                                 #Y la siguiente es una meta
@@ -456,10 +456,10 @@ class Board:
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADOR
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
                                                 self.playerpos[1] = self.playerpos[1] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 #No se puede mover
-                                                return self.Data
+                                                return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0]][self.playerpos[1] + 1] == const.CAJAM):
                                             # Y la siguiente es una caja sobre meta
@@ -469,7 +469,7 @@ class Board:
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                                 self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJA
                                                 self.playerpos[1] = self.playerpos[1] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 if (self.Data[self.playerpos[0]][self.playerpos[1] + 2] == const.META):
                                                     #Y la siguiente es una meta
@@ -477,10 +477,10 @@ class Board:
                                                     self.Data[self.playerpos[0]][self.playerpos[1] + 1] = const.JUGADORM
                                                     self.Data[self.playerpos[0]][self.playerpos[1] + 2] = const.CAJAM
                                                     self.playerpos[1] = self.playerpos[1] + 1
-                                                    return self.Data
+                                                    return self.playerpos
                                                 else:
                                                     #No se puede mover
-                                                    return self.Data
+                                                    return self.playerpos
                 else:
                     if (direccion=='S'):
                         #D
@@ -492,14 +492,14 @@ class Board:
                                 self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                                 self.Data[self.playerpos[0]+ 1 ][self.playerpos[1]] = const.JUGADOR
                                 self.playerpos[0] = self.playerpos[0] + 1
-                                return self.Data
+                                return self.playerpos
                             else:
                                 if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.META):
                                     # Y la siguiente casilla es meta
                                     self.Data[self.playerpos[0]][self.playerpos[1]] = const.LIBRE
                                     self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                     self.playerpos[0] = self.playerpos[0] + 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0]+ 1][self.playerpos[1]] == const.CAJA):
                                         #Y la siguiente es una caja
@@ -509,7 +509,7 @@ class Board:
                                             self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
                                             self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
                                             self.playerpos[0] = self.playerpos[0] + 1
-                                            return self.Data
+                                            return self.playerpos
                                         else:
                                             if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
                                                 #Y la siguiente es una meta
@@ -517,10 +517,10 @@ class Board:
                                                 self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
                                                 self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
                                                 self.playerpos[0] = self.playerpos[0] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 #No se puede mover
-                                                return self.Data
+                                                return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJAM):
                                             # Y la siguiente es una caja sobre meta
@@ -530,7 +530,7 @@ class Board:
                                                 self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                                 self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
                                                 self.playerpos[0] = self.playerpos[0] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
                                                     #Y la siguiente es una meta
@@ -538,10 +538,10 @@ class Board:
                                                     self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                                     self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
                                                     self.playerpos[0] = self.playerpos[0] + 1
-                                                    return self.Data
+                                                    return self.playerpos
                                                 else:
                                                     #No se puede mover
-                                                    return self.Data
+                                                    return self.playerpos
                         else:###############################
                             if (self.Data[self.playerpos[0]][self.playerpos[1]] == const.JUGADORM):
                                 #Si la casilla acutal es un jugador sobre la meta
@@ -550,14 +550,14 @@ class Board:
                                     self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                                     self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
                                     self.playerpos[0] = self.playerpos[0] + 1
-                                    return self.Data
+                                    return self.playerpos
                                 else:
                                     if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.META):
                                         # Y la siguiente casilla es meta
                                         self.Data[self.playerpos[0]][self.playerpos[1]] = const.META
                                         self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                         self.playerpos[0] = self.playerpos[0] + 1
-                                        return self.Data
+                                        return self.playerpos
                                     else:
                                         if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJA):
                                             #Y la siguiente es una caja
@@ -567,7 +567,7 @@ class Board:
                                                 self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
                                                 self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
                                                 self.playerpos[0] = self.playerpos[0] + 1
-                                                return self.Data
+                                                return self.playerpos
                                             else:
                                                 if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
                                                     #Y la siguiente es una meta
@@ -575,10 +575,10 @@ class Board:
                                                     self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADOR
                                                     self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
                                                     self.playerpos[0] = self.playerpos[0] + 1
-                                                    return self.Data
+                                                    return self.playerpos
                                                 else:
                                                     #No se puede mover
-                                                    return self.Data
+                                                    return self.playerpos
                                         else:
                                             if (self.Data[self.playerpos[0] + 1][self.playerpos[1]] == const.CAJAM):
                                                 # Y la siguiente es una caja sobre meta
@@ -588,7 +588,7 @@ class Board:
                                                     self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                                     self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJA
                                                     self.playerpos[0] = self.playerpos[0] + 1
-                                                    return self.Data
+                                                    return self.playerpos
                                                 else:
                                                     if (self.Data[self.playerpos[0] + 2][self.playerpos[1]] == const.META):
                                                         #Y la siguiente es una meta
@@ -596,8 +596,8 @@ class Board:
                                                         self.Data[self.playerpos[0] + 1][self.playerpos[1]] = const.JUGADORM
                                                         self.Data[self.playerpos[0] + 2][self.playerpos[1]] = const.CAJAM
                                                         self.playerpos[0] = self.playerpos[0] + 1
-                                                        return self.Data
+                                                        return self.playerpos
                                                     else:
                                                         #No se puede mover
-                                                        return self.Data
+                                                        return self.playerpos
     ## Fin mover ==================================================================
