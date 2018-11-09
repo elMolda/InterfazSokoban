@@ -6,7 +6,7 @@ import Sokoban
 
 # Fin rutas ===================================
 def jugadorManual():
-    arch = "Niveles/nivelP.txt"
+    arch = "Niveles/nivel1.txt"
     board = Sokoban.Board(arch)
     board.Print()
 
@@ -27,7 +27,7 @@ def jugadorManual():
             print("YOU WIN")
 
 def jugadorAutomatico():
-    arch = "Niveles/nivelP.txt"
+    arch = "Niveles/nivel1.txt"
     board = Sokoban.Board(arch)
     board.Print()
     board.jugadorAutomatico()

@@ -63,13 +63,10 @@ class Board:
     ## Inicio cajaBloqueda ===========================================================
     def cajaBloqueada (self,posx,posy):
         if(self.bloqueoPared(posx,posy) == 0):
-            print ("bloqueoPared")
             return 0
         if(self.cajasbloq(posx,posy) == 0):
-            print ("CJASBLOQ")
             return 0
         if(self.cuatrocajas(posx,posy) == 0):
-            print ("cuatrocajas")
             return 0
         return 1
     ## Fin cajaBloqueda ===========================================================
@@ -97,7 +94,6 @@ class Board:
             or
             (self.Data[posx +1][posy] == const.MURO and
              self.Data[posx +1][ posy+1] == const.MURO ))):
-            print("Entro 22")
             return 0
         if((self.Data[posx+1][posy] == const.CAJA or self.Data[posx+1][posy] == const.CAJAM ) and (
            ( self.Data[posx][posy-1] == const.MURO and
@@ -105,7 +101,6 @@ class Board:
             or
             (self.Data[posx][posy+1] == const.MURO and
              self.Data[posx +1][ posy+1] == const.MURO ))):
-            print("Entro 111")
             return 0
         return 1
 
@@ -116,7 +111,6 @@ class Board:
             or
             (self.Data[posx +1][posy] == const.MURO and
              self.Data[posx +1][ posy+1] == const.MURO ))):
-            print("Entro 22")
             return 0
         if((self.Data[posx+1][posy] == const.CAJA ) and (
            ( self.Data[posx][posy-1] == const.MURO and
@@ -124,7 +118,6 @@ class Board:
             or
             (self.Data[posx][posy+1] == const.MURO and
              self.Data[posx +1][ posy+1] == const.MURO ))):
-            print("Entro 111")
             return 0
         return 1
 
@@ -144,7 +137,6 @@ class Board:
                 if self.Data[filas][columnas] == const.CAJAM:
                     cont = cont + 1
                     if(self.cajasbloqM(filas,columnas) == 0):
-                        print ("CJASBLOQ121212")
                         return 0
                 if self.Data[filas][columnas] == const.CAJA:
                     if (self.cajaBloqueada(filas,columnas) == 0):

@@ -12,6 +12,6 @@ X___X_@_XXXXXXX
 XXXXX___XX____X
 X___X_________X
 X_$_X__XXX__X_X
-X__X___XX__MXMX
+X______XX__MXMX
 X______XX__MMMX
 XXXXXXXXXXXXXXX
