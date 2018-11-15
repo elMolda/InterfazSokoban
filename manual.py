@@ -1,4 +1,5 @@
 import Sokoban
+from JugadorAutomatico import *
 #Rutas de niveles =============================
 # Niveles/nivel1.txt
 # Niveles/nivel2.txt
@@ -29,8 +30,9 @@ def jugadorManual():
 def jugadorAutomatico():
     arch = "Niveles/nivel1.txt"
     board = Sokoban.Board(arch)
-    board.Print()
-    board.jugadorAutomatico()
+    j = JugadorAutomatico(board.Data)
+    j.armarGrafo()
+    #board.jugadorAutomatico()
 
 
 print ("==========MENU===========")
