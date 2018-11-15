@@ -6,7 +6,7 @@ import Sokoban
 
 # Fin rutas ===================================
 def jugadorManual():
-    arch = "Niveles/nivel1.txt"
+    arch = "Niveles/nivel3.txt"
     board = Sokoban.Board(arch)
     board.Print()
 

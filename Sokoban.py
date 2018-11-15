@@ -43,6 +43,7 @@ class Board:
                     self.playerpos = [i-2,j]
                 if (self.Data[i-2][j] == const.CAJA or self.Data[i-2][j] == const.CAJAM):
                     self.cajas = self.cajas + 1
+        print("===============================================================")
     #Funcion de movimiento individual. 
     #Entradas: Comando {W,A,S,D}
     #Salidas: La posicion del jugador en el tablero
