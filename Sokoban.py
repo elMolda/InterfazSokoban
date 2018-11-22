@@ -23,9 +23,9 @@ class Board:
             self.Height = int(lines[1])
             self.llenarMatriz(lines)    
          f.close()
-         print("Width: ",self.Width)
-         print("Height: ",self.Height)
-         print("jugador: ", self.playerpos)
+         #print("Width: ",self.Width)
+         #print("Height: ",self.Height)
+         #print("jugador: ", self.playerpos)
          #print("tabla")
          #print(self.Data)
     ## FIN Contructor ==================================================================
